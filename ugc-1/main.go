@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
+	"unicode/utf8"
 )
 
 type SuperHero struct {
-	Name       string `required:"true"`
+	Name       string `required:"true" minLen:"3" maxLen:"50"`
 	Age        int    `required:"true" min:"18" max:"100"`
 	SuperPower string `required:"true"`
 }
@@ -44,6 +45,26 @@ func ValidateStruct(a interface{}) error {
 			}
 			if intValue, ok := value.(int); ok && intValue > max {
 				return fmt.Errorf("%s must be less than or equal to %d", field.Name, max)
+			}
+		}
+
+		if minLenStr := tag.Get("minLen"); minLenStr != "" {
+			minLen, err := strconv.Atoi(minLenStr)
+			if err != nil {
+				return fmt.Errorf("invalid minLen tag for %s: %v", field.Name, err)
+			}
+			if strValue, ok := value.(string); ok && utf8.RuneCountInString(strValue) < minLen {
+				return fmt.Errorf("%s length must be greater than or equal to %d", field.Name, minLen)
+			}
+		}
+
+		if maxLenStr := tag.Get("maxLen"); maxLenStr != "" {
+			maxLen, err := strconv.Atoi(maxLenStr)
+			if err != nil {
+				return fmt.Errorf("invalid maxLen tag for %s: %v", field.Name, err)
+			}
+			if strValue, ok := value.(string); ok && utf8.RuneCountInString(strValue) > maxLen {
+				return fmt.Errorf("%s length must be less than or equal to %d", field.Name, maxLen)
 			}
 		}
 	}
