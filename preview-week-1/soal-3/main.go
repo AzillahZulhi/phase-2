@@ -4,11 +4,17 @@ import (
 	"fmt"
 )
 
-func sendNumbers(evenCh, oddCh chan<- int) {
+func sendNumbers(evenCh, oddCh chan<- int, errCh chan<- error) {
 	defer close(evenCh)
 	defer close(oddCh)
+	defer close(errCh)
 
-	for i := 1; i <= 20; i++ {
+	for i := 1; i <= 25; i++ {
+		if i > 20 {
+			errCh <- fmt.Errorf("Number %d is greater than 20", i)
+			continue
+		}
+
 		if i%2 == 0 {
 			evenCh <- i
 		} else {
@@ -35,11 +41,17 @@ func main() {
 	evenCh := make(chan int)
 	oddCh := make(chan int)
 	done := make(chan bool)
+	errCh := make(chan error)
 
-	go sendNumbers(evenCh, oddCh)
+	go sendNumbers(evenCh, oddCh, errCh)
 	go printEvenNumbers(evenCh, done)
 	go printOddNumbers(oddCh, done)
 
-	<-done
-	<-done
+	for i := 0; i < 5; i++ {
+		select {
+		case err := <-errCh:
+			fmt.Println("Error:", err)
+		case <-done:
+		}
+	}
 }
