@@ -22,7 +22,7 @@ func consumer(ch <-chan int, wg *sync.WaitGroup) {
 
 func main() {
 	var wg sync.WaitGroup
-	ch := make(chan int)
+	ch := make(chan int, 5) // Modified Channel
 
 	wg.Add(2)
 	go producer(ch, &wg)
@@ -30,3 +30,13 @@ func main() {
 
 	wg.Wait()
 }
+
+// Saluran Tanpa Buffer:
+// - Saat menggunakan saluran tanpa buffer, pengiriman data akan berhenti sampai ada penerima yang siap untuk membacanya.
+// - Proses pengiriman dan penerimaan data berlangsung secara sinkron.
+
+// Saluran dengan Buffer:
+// - Saluran dengan buffer memungkinkan untuk mengirim data ke dalam buffer tanpa menunggu penerima membaca data tersebut.
+// - Jika buffer belum penuh, pengirim dapat mengirim data tanpa harus menunggu.
+// - Jika buffer sudah penuh, pengiriman data akan terhenti sementara sampai ada ruang kosong di dalam buffer.
+// - Proses pengiriman dan penerimaan data berlangsung secara asinkron.
