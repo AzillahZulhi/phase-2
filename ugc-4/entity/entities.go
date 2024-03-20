@@ -16,10 +16,22 @@ type Villain struct {
 }
 
 type CriminalReport struct {
-	ID          int    `json:"id"`
+	ID          int64  `json:"id"`
 	HeroID      int    `json:"hero_id"`
 	VillainID   int    `json:"villain_id"`
 	Description string `json:"description"`
 	Date        string `json:"date"`
 	Time        string `json:"time"`
+}
+
+type ErrorMessage struct {
+	Message string `json:"message"`
+	Status  int64  `json:"status"`
+}
+
+type SuccessMessage struct {
+	Message string           `json:"message"`
+	Status  int64            `json:"status"`
+	Datas   []CriminalReport `json:"datas,omitempty"`
+	Data    *CriminalReport  `json:"data,omitempty"`
 }
