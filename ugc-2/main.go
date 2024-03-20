@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	db := config.ConnectDB("root:@tcp(localhost:3306)/superhero_database")
+	db := config.ConnectDB("root:@tcp(localhost:3306)/avenger_corp_database")
 	defer db.Close()
 
 	mux := http.NewServeMux()
