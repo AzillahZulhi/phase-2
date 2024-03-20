@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"UGC-2-3/config"
-	"UGC-2-3/entity"
 	"encoding/json"
 	"net/http"
+	"ugc-2/config"
+	"ugc-2/entity"
 )
 
 func GetHeroesData(w http.ResponseWriter, r *http.Request) {

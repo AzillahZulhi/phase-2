@@ -1,10 +1,10 @@
 package main
 
 import (
-	"UGC-2-3/config"
-	"UGC-2-3/handler"
 	"fmt"
 	"net/http"
+	"ugc-2/config"
+	"ugc-2/handler"
 )
 
 func main() {
