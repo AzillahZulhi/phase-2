@@ -88,7 +88,7 @@ func main() {
 		Name:       "Tony Stark",
 		Age:        50,
 		SuperPower: "Rich",
-		Email:      "i.am.iron.man@",
+		Email:      "i.am.iron.man@example.com",
 	}
 	heroValidate := ValidateStruct(IronMan)
 	fmt.Println(heroValidate)
