@@ -1,0 +1,16 @@
+[
+    {
+        "email": "vivalavida@email.com",
+        "password": "password123",
+        "full_name": "Viva la vida",
+        "age": 24,
+        "occupation": "Software enginer",
+        "role": "Software enginer"
+    },
+    
+    {
+        "email": "vivalavida@email.com",
+        "password": "password123"
+    }
+    
+]
