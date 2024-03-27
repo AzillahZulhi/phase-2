@@ -13,8 +13,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var secretKey = []byte("12345")
-
 func LoginHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	var loginCred entity.LoginCredentials
 	err := json.NewDecoder(r.Body).Decode(&loginCred)
@@ -61,15 +59,22 @@ func LoginHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user": user,
-		"exp":  time.Now().Add(time.Hour * 24).Unix(),
+		"user_id":    user.ID,
+		"email":      user.Email,
+		"username":   user.FullName,
+		"age":        user.Age,
+		"occupation": user.Occupation,
+		"role":       user.Role,
+		"exp":        time.Now().Add(time.Hour * 24).Unix(),
 	})
+
+	secretKey := []byte("mySecretKey")
 
 	tokenString, err := token.SignedString(secretKey)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(entity.ErrorMessage{
-			Message: "Error signing token",
+			Message: "Failed to create token",
 			Status:  http.StatusInternalServerError,
 		})
 		return
